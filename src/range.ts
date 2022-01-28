@@ -13,12 +13,7 @@ export default class Range {
    * @param endRow index of row of the end position
    * @param endCol index of col of the end position
    */
-  constructor(
-    public readonly startRow: number,
-    public readonly startCol: number,
-    public readonly endRow: number,
-    public readonly endCol: number
-  ) {
+  constructor(public startRow: number, public startCol: number, public endRow: number, public endCol: number) {
     // No body necessary
   }
 
@@ -45,7 +40,7 @@ export default class Range {
    * @param {int} index
    * @returns {boolean}
    */
-  inRow(index: number): boolean {
+  containsRow(index: number): boolean {
     return this.startRow <= index && index <= this.endRow;
   }
 
@@ -54,7 +49,7 @@ export default class Range {
    * @param {int} index
    * @returns {boolean}
    */
-  inCol(index: number): boolean {
+  containsCol(index: number): boolean {
     return this.startCol <= index && index <= this.endCol;
   }
 
@@ -65,7 +60,7 @@ export default class Range {
    * @returns {boolean}
    */
   contains(rowIndex: number, colIndex: number): boolean {
-    return this.inRow(rowIndex) && this.inCol(colIndex);
+    return this.containsRow(rowIndex) && this.containsCol(colIndex);
   }
 
   /**
@@ -155,23 +150,10 @@ export function newRange(ref: string): Range {
   return new Range(start[1], start[0], end[1], end[0]);
 }
 
-export function eachRanges(refs: Array<string>, cb: (range: Range) => void) {
+export function eachRanges(refs: string[], cb: (range: Range) => void) {
   if (refs && refs.length > 0) {
     refs.forEach((ref) => {
       cb(newRange(ref));
     });
   }
 }
-
-// export function findRanges(refs: Array<string>, cb) {
-//   if (refs && refs.length > 0) {
-//     let it = null;
-//     if (refs.find((ref) => {
-//       it = newRange(ref);
-//       return cb(it);
-//     })) {
-//       return it;
-//     }
-//   }
-//   return null;
-// }

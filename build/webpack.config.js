@@ -1,15 +1,9 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
     'table-render': './src/index.ts',
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      title: 'Table Render',
-    }),
-  ],
   module: {
     rules: [
       {

@@ -35,46 +35,46 @@ describe('Range', () => {
       assert.equal(new Range(1, 0, 9, 0).cols, 0);
     });
   });
-  describe('#inRow() with new Range(1, 2, 8, 8)', () => {
+  describe('#containsRow() with new Range(1, 2, 8, 8)', () => {
     const range = new Range(1, 2, 8, 8);
     it('should return false when value is 0', () => {
-      assert.equal(range.inRow(0), false);
+      assert.equal(range.containsRow(0), false);
     });
     it('should return false when value is 9', () => {
-      assert.equal(range.inRow(9), false);
+      assert.equal(range.containsRow(9), false);
     });
     it('should return false when value is 19', () => {
-      assert.equal(range.inRow(19), false);
+      assert.equal(range.containsRow(19), false);
     });
     it('should return true when value is 1', () => {
-      assert.equal(range.inRow(1), true);
+      assert.equal(range.containsRow(1), true);
     });
     it('should return true when value is 8', () => {
-      assert.equal(range.inRow(8), true);
+      assert.equal(range.containsRow(8), true);
     });
     it('should return true when value is 6', () => {
-      assert.equal(range.inRow(6), true);
+      assert.equal(range.containsRow(6), true);
     });
   });
-  describe('#inCol() with new Range(1, 2, 8, 8)', () => {
+  describe('#containsCol() with new Range(1, 2, 8, 8)', () => {
     const range = new Range(1, 2, 8, 8);
     it('should return false when value is 0', () => {
-      assert.equal(range.inCol(0), false);
+      assert.equal(range.containsCol(0), false);
     });
     it('should return false when value is 9', () => {
-      assert.equal(range.inCol(9), false);
+      assert.equal(range.containsCol(9), false);
     });
     it('should return false when value is 19', () => {
-      assert.equal(range.inCol(19), false);
+      assert.equal(range.containsCol(19), false);
     });
     it('should return true when value is 2', () => {
-      assert.equal(range.inCol(2), true);
+      assert.equal(range.containsCol(2), true);
     });
     it('should return true when value is 8', () => {
-      assert.equal(range.inCol(8), true);
+      assert.equal(range.containsCol(8), true);
     });
     it('should return true when value is 6', () => {
-      assert.equal(range.inCol(6), true);
+      assert.equal(range.containsCol(6), true);
     });
   });
   describe('#contains() with new Range(1, 2, 8, 8)', () => {
