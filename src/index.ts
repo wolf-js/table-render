@@ -365,7 +365,7 @@ function retsetAreas(table: Table) {
     return c?.hide ? 0 : c?.width || table._colWidth;
   };
 
-  const { _startRow, _startCol } = table;
+  const { _startRow, _startCol, _rows, _cols } = table;
 
   // area2
   const area2 = Area.create(_startRow, _startCol, frows - 1, fcols - 1, tx, ty, getRowHeight, getColWidth);
@@ -375,7 +375,7 @@ function retsetAreas(table: Table) {
   // endRow
   let y = area2.height;
   let endRow = startRow4;
-  while (y < table._height) {
+  while (y < table._height && endRow < _rows) {
     y += getRowHeight(endRow);
     endRow += 1;
   }
@@ -383,7 +383,7 @@ function retsetAreas(table: Table) {
   // endCol
   let x = area2.width;
   let endCol = startCol4;
-  while (x < table._width) {
+  while (x < table._width && endCol < _cols) {
     x += getColWidth(endCol);
     endCol += 1;
   }
