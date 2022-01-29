@@ -9,6 +9,7 @@ function cellText(ri: number, ci: number): string {
 Table.create('#table', 800, 500)
   .colHeader({ height: 50, rows: 2, merges: ['A1:C1', 'D1:D2'] })
   .merges(['G9:H10', 'B9:D10'])
+  .selections(['D4:E5', 'G14:G15'])
   .startRow(2)
   .rows(20)
   .cols(8)

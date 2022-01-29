@@ -171,13 +171,13 @@ function renderFreezeLines(
 }
 
 export function render(table: Table) {
-  const { _width, _height, _target, _scale, _freeze, _areas, _headerAreas, _rowHeader, _colHeader } = table;
-  const canvas = new Canvas(_target, _scale);
-  canvas.size(_width, _height);
+  const { _width, _height, _target, _scale, _viewport, _freeze, _rowHeader, _colHeader } = table;
+  if (_viewport) {
+    const canvas = new Canvas(_target, _scale);
+    canvas.size(_width, _height);
 
-  if (_areas && _headerAreas) {
-    const [area1, area2, area3, area4] = _areas;
-    const [headerArea1, headerArea21, headerArea23, headerArea3] = _headerAreas;
+    const [area1, area2, area3, area4] = _viewport.areas;
+    const [headerArea1, headerArea21, headerArea23, headerArea3] = _viewport.headerAreas;
 
     // render-4
     renderBody(canvas, area4, table);
