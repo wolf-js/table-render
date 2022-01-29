@@ -51,12 +51,13 @@ export default class Canvas {
     _target.style.width = `${width}px`;
     _target.style.height = `${height}px`;
 
+    const dpr = window.devicePixelRatio;
     // Set actual size in memory (scaled to account for extra pixel density).
-    _target.width = Math.floor(width * _scale);
-    _target.height = Math.floor(height * _scale);
+    _target.width = Math.floor(width * dpr);
+    _target.height = Math.floor(height * dpr);
 
     // Normalize coordinate system to use css pixels.
-    this._ctx.scale(_scale, _scale);
+    this._ctx.scale(dpr * _scale, dpr * _scale);
     return this;
   }
 
@@ -193,7 +194,14 @@ export default class Canvas {
     return this;
   }
 
-  arc(x: number, y: number, radius: number, startAngle: number, endAngle: number, counterclockwise?: boolean) {
+  arc(
+    x: number,
+    y: number,
+    radius: number,
+    startAngle: number,
+    endAngle: number,
+    counterclockwise?: boolean
+  ) {
     this._ctx.arc(x, y, radius, startAngle, endAngle, counterclockwise);
     return this;
   }
