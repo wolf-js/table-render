@@ -44,7 +44,8 @@ function renderAreaCells(
   area: Area,
   cell: CellFunc,
   defaultStyle: CellStyle,
-  merges?: string[] | null
+  merges?: string[] | null,
+  renderSelectionsCallback?: () => void
 ) {
   canvas.save().rect(0, 0, area.width, area.height).clip();
 
@@ -61,6 +62,8 @@ function renderAreaCells(
       }
     });
   }
+
+  if (renderSelectionsCallback) renderSelectionsCallback();
 
   canvas.restore();
 }
@@ -87,7 +90,7 @@ function renderAreaSelections(
         let { x, y, width, height } = area.rect(it);
         const { bgcolor, borderWidth, borderColor } = style;
 
-        canvas.save().attr({ fillStyle: bgcolor });
+        canvas.save().beginPath().attr({ fillStyle: bgcolor });
         if (type === 'body') {
           x += borderWidth / 2;
           y += borderWidth / 2;
@@ -123,8 +126,7 @@ function renderArea(
   if (!area) return;
   canvas.save().translate(area.x, area.y);
   renderAreaLines(canvas, area, lineStyle);
-  renderAreaCells(canvas, area, cell, style, merges);
-  if (renderSelectionsCallback) renderSelectionsCallback();
+  renderAreaCells(canvas, area, cell, style, merges, renderSelectionsCallback);
   canvas.restore();
 }
 
@@ -171,7 +173,7 @@ function renderFreezeLines(
 }
 
 export function render(table: Table) {
-  const { _width, _height, _target, _scale, _viewport, _freeze, _rowHeader, _colHeader } = table;
+  const { _width, _height, _target, _scale, _viewport, _freeze, _rowHeader, _colHeader, _focus } = table;
   if (_viewport) {
     const canvas = new Canvas(_target, _scale);
     canvas.size(_width, _height);
