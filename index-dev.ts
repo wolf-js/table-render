@@ -5,15 +5,13 @@ function cellText(ri: number, ci: number): string {
   return ri === 8 && ci === 1 ? longText : `${ri}-${ci}`;
 }
 
-// .selection('B9:D11')
 Table.create('#table', 800, 500)
+  .scale(1.1)
   .colHeader({ height: 50, rows: 2, merges: ['A1:C1', 'D1:D2'] })
-  .merges(['G9:H10', 'B9:D10'])
-  .selections(['B6:D12', 'G14:G15'])
-  .focus('G14')
-  .startRow(2)
+  .merges(['G10:H11', 'B9:D10'])
+  .startRow(1)
   .rows(20)
-  .cols(8)
+  .cols(9)
   .col((index) => (index == 5 ? { hide: true } : undefined))
   .freeze(6, 2)
   .scrollRows(2)

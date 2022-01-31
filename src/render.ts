@@ -26,7 +26,7 @@ function renderCell(canvas: Canvas, cell: Cell | string | number, rect: Rect, de
   cellRender(canvas, text, rect, nstyle);
 }
 
-function renderAreaLines(canvas: Canvas, area: Area, lineStyle: LineStyle) {
+function renderGridLines(canvas: Canvas, area: Area, lineStyle: LineStyle) {
   renderLines(canvas, lineStyle, () => {
     // draw row lines
     area.eachRow((row, y, h) => {
@@ -39,141 +39,58 @@ function renderAreaLines(canvas: Canvas, area: Area, lineStyle: LineStyle) {
   });
 }
 
-function renderAreaCells(
+function renderArea(
   canvas: Canvas,
-  area: Area,
+  area: Area | null,
   cell: CellFunc,
-  defaultStyle: CellStyle,
-  merges?: string[] | null,
-  renderSelectionsCallback?: () => void
+  defaultCellStyle: CellStyle,
+  defaultLineStyle: LineStyle,
+  merges?: string[] | null
 ) {
-  canvas.save().rect(0, 0, area.width, area.height).clip();
+  if (!area) return;
+  canvas.save().translate(area.x, area.y);
+
+  // render lines
+  renderGridLines(canvas, area, defaultLineStyle);
+
+  canvas.rect(0, 0, area.width, area.height).clip();
 
   // render cells
   area.each((row, col, rect) => {
-    renderCell(canvas, cell(row, col), rect, defaultStyle);
+    renderCell(canvas, cell(row, col), rect, defaultCellStyle);
   });
 
   // render merges
   if (merges) {
     eachRanges(merges, (it) => {
       if (it.intersects(area.range)) {
-        renderCell(canvas, cell(it.startRow, it.startCol), area.rect(it), defaultStyle);
+        renderCell(canvas, cell(it.startRow, it.startCol), area.rect(it), defaultCellStyle);
       }
     });
   }
-
-  if (renderSelectionsCallback) renderSelectionsCallback();
-
-  canvas.restore();
-}
-
-function renderAreaSelections(
-  canvas: Canvas,
-  area: Area | null,
-  style: SelectionStyle,
-  type: 'row-header' | 'col-header' | 'body',
-  max: number,
-  values?: string[] | null
-) {
-  if (values && area) {
-    eachRanges(values, (it) => {
-      if (type === 'row-header') {
-        it.startCol = 0;
-        it.endCol = max;
-      } else if (type === 'col-header') {
-        it.startRow = 0;
-        it.endRow = max;
-      }
-
-      if (it.intersects(area.range)) {
-        let { x, y, width, height } = area.rect(it);
-        const { bgcolor, borderWidth, borderColor } = style;
-
-        canvas.save().beginPath().attr({ fillStyle: bgcolor });
-        if (type === 'body') {
-          x += borderWidth / 2;
-          y += borderWidth / 2;
-          width -= borderWidth;
-          height -= borderWidth;
-
-          canvas
-            .attr({
-              strokeStyle: borderColor,
-              lineWidth: borderWidth,
-            })
-            .rect(x, y, width, height)
-            .fill()
-            .stroke();
-        } else {
-          canvas.rect(x, y, width, height).fill();
-        }
-        canvas.restore();
-      }
-    });
-  }
-}
-
-function renderArea(
-  canvas: Canvas,
-  area: Area | null,
-  cell: CellFunc,
-  style: CellStyle,
-  lineStyle: LineStyle,
-  merges: string[] | null | undefined,
-  renderSelectionsCallback?: () => void
-) {
-  if (!area) return;
-  canvas.save().translate(area.x, area.y);
-  renderAreaLines(canvas, area, lineStyle);
-  renderAreaCells(canvas, area, cell, style, merges, renderSelectionsCallback);
   canvas.restore();
 }
 
 function renderBody(canvas: Canvas, area: Area | null, table: Table) {
-  renderArea(canvas, area, table._cell, table._cellStyle, table._lineStyle, table._merges, () => {
-    renderAreaSelections(canvas, area, table._selectionStyle, 'body', 0, table._selections);
-  });
+  renderArea(canvas, area, table._cell, table._cellStyle, table._lineStyle, table._merges);
 }
 
 function renderRowHeader(canvas: Canvas, area: Area | null, table: Table) {
   const { cell, width, merges, cols } = table._rowHeader;
   if (width > 0) {
-    renderArea(canvas, area, cell, table._headerCellStyle, table._headerLineStyle, merges, () => {
-      renderAreaSelections(canvas, area, table._selectionStyle, 'row-header', cols - 1, table._selections);
-    });
+    renderArea(canvas, area, cell, table._headerCellStyle, table._headerLineStyle, merges);
   }
 }
 
 function renderColHeader(canvas: Canvas, area: Area | null, table: Table) {
   const { cell, height, merges, rows } = table._colHeader;
   if (height > 0) {
-    renderArea(canvas, area, cell, table._headerCellStyle, table._headerLineStyle, merges, () => {
-      renderAreaSelections(canvas, area, table._selectionStyle, 'col-header', rows - 1, table._selections);
-    });
-  }
-}
-
-function renderFreezeLines(
-  canvas: Canvas,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  row: number,
-  col: number,
-  lineStyle: LineStyle
-) {
-  if (col > 0 || row > 0) {
-    renderLines(canvas, lineStyle, () => {
-      if (col > 0) canvas.line(0, y, width, y);
-      if (row > 0) canvas.line(x, 0, x, height);
-    });
+    renderArea(canvas, area, cell, table._headerCellStyle, table._headerLineStyle, merges);
   }
 }
 
 export function render(table: Table) {
-  const { _width, _height, _target, _scale, _viewport, _freeze, _rowHeader, _colHeader, _focus } = table;
+  const { _width, _height, _target, _scale, _viewport, _freeze, _rowHeader, _colHeader } = table;
   if (_viewport) {
     const canvas = new Canvas(_target, _scale);
     canvas.size(_width, _height);
@@ -219,7 +136,7 @@ export function render(table: Table) {
         () => _colHeader.height,
         () => _rowHeader.width
       );
-      renderArea(canvas, area0, () => '', table._headerCellStyle, table._headerLineStyle, undefined);
+      renderArea(canvas, area0, () => '', table._headerCellStyle, table._headerLineStyle);
     }
   }
 }

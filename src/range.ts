@@ -13,7 +13,12 @@ export default class Range {
    * @param endRow index of row of the end position
    * @param endCol index of col of the end position
    */
-  constructor(public startRow: number, public startCol: number, public endRow: number, public endCol: number) {
+  constructor(
+    public startRow: number,
+    public startCol: number,
+    public endRow: number,
+    public endCol: number
+  ) {
     // No body necessary
   }
 

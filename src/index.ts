@@ -161,23 +161,7 @@ export default class Table {
     fontName: 'Source Sans Pro',
   };
 
-  // a highlight cell without background filled shows as focused cell
-  _focus: string | undefined = undefined;
-
-  _focusStyle: FocusStyle = {
-    bgcolor: '#4b89ff14',
-  };
-
-  // The selection range contains multiple cells
-  _selections: string[] | null = null;
-
-  _selectionStyle: SelectionStyle = {
-    borderWidth: 2,
-    borderColor: '#4b89ff',
-    bgcolor: '#4b89ff14',
-  };
-
-  // freezed [rows, colIndexs]
+  // freezed [rows, cols]
   _freeze: [number, number] = [0, 0];
 
   _freezeLineStyle: LineStyle = {
@@ -306,26 +290,6 @@ export default class Table {
 
   headerCellStyle(value: Partial<CellStyle>) {
     Object.assign(this._headerCellStyle, value);
-    return this;
-  }
-
-  focus(value: string | undefined) {
-    this._focus = value;
-    return this;
-  }
-
-  focusStyle(value: Partial<FocusStyle>) {
-    Object.assign(this._focusStyle, value);
-    return this;
-  }
-
-  selections(values: string[]) {
-    this._selections = values;
-    return this;
-  }
-
-  selectionStyle(value: Partial<SelectionStyle>) {
-    Object.assign(this._selectionStyle, value);
     return this;
   }
 
