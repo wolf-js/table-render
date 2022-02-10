@@ -1,4 +1,4 @@
-import { expr2xy } from 'table-alphabet';
+import { expr2xy } from './alphabet';
 
 /**
  * the range specified by a start position and an end position,

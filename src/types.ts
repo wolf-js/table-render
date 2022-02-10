@@ -32,16 +32,6 @@ export type CellStyle = {
   padding?: [number, number];
 };
 
-export type FocusStyle = {
-  bgcolor: string;
-};
-
-export type SelectionStyle = {
-  borderWidth: number;
-  borderColor: string;
-  bgcolor: string;
-};
-
 export type Cell = {
   text: string;
   value: string;

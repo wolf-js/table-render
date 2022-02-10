@@ -3,7 +3,7 @@ import Area from './area';
 import Canvas from './canvas';
 import { cellRender } from './cell-render';
 import { eachRanges } from './range';
-import { Cell, CellFunc, CellStyle, LineStyle, Rect, SelectionStyle } from './types';
+import { Cell, CellFunc, CellStyle, LineStyle, Rect } from './types';
 
 function renderLines(canvas: Canvas, { width, color }: LineStyle, cb: () => void) {
   if (width > 0) {

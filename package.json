@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "a table render",
   "main": "dist/table-render.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "dev": "./node_modules/.bin/webpack serve --config build/webpack.dev.js",
     "build": "./node_modules/.bin/webpack --config build/webpack.prod.js",

@@ -1,5 +1,6 @@
-import Area from './area';
-import { LineStyle, CellStyle, Cell, RowHeader, ColHeader, FocusStyle, SelectionStyle, CellFunc, ColFunc, RowFunc } from './types';
+import { expr2xy, xy2expr } from './alphabet';
+import { LineStyle, CellStyle, Cell, RowHeader, ColHeader, CellFunc, ColFunc, RowFunc } from './types';
+import Viewport from './viewport';
 /**
  * ----------------------------------------------------------------
  * |            | column header                                   |
@@ -60,21 +61,9 @@ export default class Table {
     _colHeader: ColHeader;
     _headerLineStyle: LineStyle;
     _headerCellStyle: CellStyle;
-    _focus: string | undefined;
-    _focusStyle: FocusStyle;
-    _selections: string[] | null;
-    _selectionStyle: SelectionStyle;
     _freeze: [number, number];
     _freezeLineStyle: LineStyle;
-    /**
-     * -----------------------
-     * |  area-2   |   area-1
-     * -----------------------
-     * |  area-3   |   area-4
-     * -----------------------
-     */
-    _areas: Area[] | null;
-    _headerAreas: Area[] | null;
+    _viewport: Viewport | null;
     constructor(container: string | HTMLCanvasElement, width: number, height: number);
     render(): this;
     width(value: number): this;
@@ -98,11 +87,8 @@ export default class Table {
     colHeader(value: Partial<ColHeader>): this;
     headerLineStyle(value: Partial<LineStyle>): this;
     headerCellStyle(value: Partial<CellStyle>): this;
-    focus(value: string | undefined): this;
-    focusStyle(value: Partial<FocusStyle>): this;
-    selections(values: string[]): this;
-    selectionStyle(value: Partial<SelectionStyle>): this;
     freeze(rows: number, cols: number): this;
     freezeLineStyle(value: Partial<LineStyle>): this;
     static create(container: string | HTMLCanvasElement, width: number, height: number): Table;
 }
+export { expr2xy, xy2expr };

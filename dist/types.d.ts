@@ -27,14 +27,6 @@ export declare type CellStyle = {
     };
     padding?: [number, number];
 };
-export declare type FocusStyle = {
-    bgcolor: string;
-};
-export declare type SelectionStyle = {
-    borderWidth: number;
-    borderColor: string;
-    bgcolor: string;
-};
 export declare type Cell = {
     text: string;
     value: string;

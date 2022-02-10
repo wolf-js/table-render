@@ -1,20 +1,6 @@
-import { stringAt } from 'table-alphabet';
-import Area from './area';
+import { stringAt, expr2xy, xy2expr } from './alphabet';
 import { render } from './render';
-import {
-  LineStyle,
-  CellStyle,
-  Row,
-  Col,
-  Cell,
-  RowHeader,
-  ColHeader,
-  FocusStyle,
-  SelectionStyle,
-  CellFunc,
-  ColFunc,
-  RowFunc,
-} from './types';
+import { LineStyle, CellStyle, Cell, RowHeader, ColHeader, CellFunc, ColFunc, RowFunc } from './types';
 import Viewport from './viewport';
 /**
  * ----------------------------------------------------------------
@@ -307,3 +293,5 @@ export default class Table {
     return new Table(container, width, height);
   }
 }
+
+export { expr2xy, xy2expr };
