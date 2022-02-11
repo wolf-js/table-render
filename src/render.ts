@@ -3,7 +3,7 @@ import Area from './area';
 import Canvas from './canvas';
 import { cellRender } from './cell-render';
 import { eachRanges } from './range';
-import { Cell, CellFunc, CellStyle, LineStyle, Rect } from './types';
+import { Cell, CellFunc, CellStyle, ColFunc, LineStyle, Rect, RowFunc } from './types';
 
 function renderLines(canvas: Canvas, { width, color }: LineStyle, cb: () => void) {
   if (width > 0) {
@@ -45,7 +45,9 @@ function renderArea(
   cell: CellFunc,
   defaultCellStyle: CellStyle,
   defaultLineStyle: LineStyle,
-  merges?: string[] | null
+  merges?: string[] | null,
+  row?: RowFunc,
+  col?: ColFunc
 ) {
   if (!area) return;
   canvas.save().translate(area.x, area.y);
@@ -55,16 +57,28 @@ function renderArea(
 
   canvas.rect(0, 0, area.width, area.height).clip();
 
+  const mergeCellStyle = (r: number, c: number) => {
+    const cstyle = { ...defaultCellStyle };
+    if (row) Object.assign(cstyle, row(r)?.style);
+    if (col) Object.assign(cstyle, col(c)?.style);
+    return cstyle;
+  };
+
   // render cells
-  area.each((row, col, rect) => {
-    renderCell(canvas, cell(row, col), rect, defaultCellStyle);
+  area.each((r, c, rect) => {
+    renderCell(canvas, cell(r, c), rect, mergeCellStyle(r, c));
   });
 
   // render merges
   if (merges) {
     eachRanges(merges, (it) => {
       if (it.intersects(area.range)) {
-        renderCell(canvas, cell(it.startRow, it.startCol), area.rect(it), defaultCellStyle);
+        renderCell(
+          canvas,
+          cell(it.startRow, it.startCol),
+          area.rect(it),
+          mergeCellStyle(it.startRow, it.startCol)
+        );
       }
     });
   }
@@ -72,7 +86,16 @@ function renderArea(
 }
 
 function renderBody(canvas: Canvas, area: Area | null, table: Table) {
-  renderArea(canvas, area, table._cell, table._cellStyle, table._lineStyle, table._merges);
+  renderArea(
+    canvas,
+    area,
+    table._cell,
+    table._cellStyle,
+    table._lineStyle,
+    table._merges,
+    table._row,
+    table._col
+  );
 }
 
 function renderRowHeader(canvas: Canvas, area: Area | null, table: Table) {

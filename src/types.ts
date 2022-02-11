@@ -45,6 +45,7 @@ export type Row = {
   height: number;
   hide?: boolean;
   autoFit?: boolean;
+  style?: CellStyle;
 };
 
 export type RowFunc = (index: number) => Partial<Row> | undefined;
@@ -54,6 +55,7 @@ export type Col = {
   width: number;
   hide?: boolean;
   autoFit?: boolean;
+  style?: CellStyle;
 };
 
 export type ColFunc = (index: number) => Partial<Col> | undefined;
