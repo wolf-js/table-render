@@ -80,14 +80,14 @@ export default class Table {
     row(value: RowFunc): this;
     col(value: ColFunc): this;
     cell(value: (rowIndex: number, colIndex: number) => Cell | string | number): this;
-    merges(value: string[]): this;
+    merges(value?: string[]): this;
     lineStyle(value: Partial<LineStyle>): this;
     cellStyle(value: Partial<CellStyle>): this;
-    rowHeader(value: Partial<RowHeader>): this;
-    colHeader(value: Partial<ColHeader>): this;
+    rowHeader(value?: Partial<RowHeader>): this;
+    colHeader(value?: Partial<ColHeader>): this;
     headerLineStyle(value: Partial<LineStyle>): this;
-    headerCellStyle(value: Partial<CellStyle>): this;
-    freeze(rows: number, cols: number): this;
+    headerCellStyle(value?: Partial<CellStyle>): this;
+    freeze(ref?: string): this;
     freezeLineStyle(value: Partial<LineStyle>): this;
     static create(container: string | HTMLCanvasElement, width: number, height: number): Table;
 }

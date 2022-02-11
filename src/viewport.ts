@@ -24,7 +24,7 @@ export default class Viewport {
 
   constructor(table: Table) {
     const [tx, ty] = [table._rowHeader.width, table._colHeader.height];
-    const [frows, fcols] = table._freeze;
+    const [fcols, frows] = table._freeze;
 
     const getRowHeight = (index: number): number => {
       const r = table._row(index);

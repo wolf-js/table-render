@@ -115,7 +115,7 @@ export function render(table: Table) {
     renderRowHeader(canvas, headerArea23, table);
 
     // render freeze
-    const [rows, cols] = _freeze;
+    const [cols, rows] = _freeze;
     if (cols > 0 || rows > 0) {
       renderLines(canvas, table._freezeLineStyle, () => {
         if (cols > 0) canvas.line(0, area4.y, _width, area4.y);

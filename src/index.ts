@@ -147,7 +147,7 @@ export default class Table {
     fontName: 'Source Sans Pro',
   };
 
-  // freezed [rows, cols]
+  // freezed [cols, rows]
   _freeze: [number, number] = [0, 0];
 
   _freezeLineStyle: LineStyle = {
@@ -244,8 +244,8 @@ export default class Table {
     return this;
   }
 
-  merges(value: string[]) {
-    this._merges = value;
+  merges(value?: string[]) {
+    if (value) this._merges = value;
     return this;
   }
 
@@ -259,13 +259,13 @@ export default class Table {
     return this;
   }
 
-  rowHeader(value: Partial<RowHeader>) {
-    Object.assign(this._rowHeader, value);
+  rowHeader(value?: Partial<RowHeader>) {
+    if (value) Object.assign(this._rowHeader, value);
     return this;
   }
 
-  colHeader(value: Partial<ColHeader>) {
-    Object.assign(this._colHeader, value);
+  colHeader(value?: Partial<ColHeader>) {
+    if (value) Object.assign(this._colHeader, value);
     return this;
   }
 
@@ -274,13 +274,13 @@ export default class Table {
     return this;
   }
 
-  headerCellStyle(value: Partial<CellStyle>) {
-    Object.assign(this._headerCellStyle, value);
+  headerCellStyle(value?: Partial<CellStyle>) {
+    if (value) Object.assign(this._headerCellStyle, value);
     return this;
   }
 
-  freeze(rows: number, cols: number) {
-    this._freeze = [rows, cols];
+  freeze(ref?: string) {
+    if (ref) this._freeze = expr2xy(ref);
     return this;
   }
 

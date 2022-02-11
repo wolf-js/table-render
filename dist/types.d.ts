@@ -16,9 +16,9 @@ export declare type CellStyle = {
     color: string;
     bold: boolean;
     italic: boolean;
-    rotate: number;
     fontSize: number;
     fontName: string;
+    rotate?: number;
     border?: {
         left: [LineType, string];
         top: [LineType, string];
