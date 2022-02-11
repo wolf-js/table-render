@@ -19,7 +19,7 @@ function renderCell(canvas: Canvas, cell: Cell | string | number, rect: Rect, de
   if (cell) {
     if (typeof cell === 'string' || typeof cell === 'number') text = `${cell}`;
     else {
-      text = cell.value || cell.text || '';
+      text = (cell.value || '') + '';
       if (cell.style) nstyle = { ...defaultStyle, ...cell.style };
     }
   }

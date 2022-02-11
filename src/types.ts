@@ -33,8 +33,7 @@ export type CellStyle = {
 };
 
 export type Cell = {
-  text: string;
-  value: string;
+  value: string | number;
   type?: string;
   style?: CellStyle;
 };

@@ -28,8 +28,7 @@ export declare type CellStyle = {
     padding?: [number, number];
 };
 export declare type Cell = {
-    text: string;
-    value: string;
+    value: string | number;
     type?: string;
     style?: CellStyle;
 };
