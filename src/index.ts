@@ -79,9 +79,11 @@ export default class Table {
    * @param {int} colIndex
    * @returns Cell | string
    */
-  _cell: CellFunc = () => '';
+  _cell: CellFunc = () => undefined;
 
   _merges: string[] = [];
+
+  _styles: CellStyle[] = [];
 
   _lineStyle: LineStyle = {
     width: 1,
@@ -239,13 +241,18 @@ export default class Table {
     return this;
   }
 
-  cell(value: (rowIndex: number, colIndex: number) => Cell | string | number) {
+  cell(value: (rowIndex: number, colIndex: number) => Cell | string | number | undefined) {
     this._cell = value;
     return this;
   }
 
   merges(value?: string[]) {
     if (value) this._merges = value;
+    return this;
+  }
+
+  styles(value?: CellStyle[]) {
+    if (value) this._styles = value;
     return this;
   }
 

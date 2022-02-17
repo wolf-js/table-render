@@ -1,3 +1,4 @@
+import { rmSync } from 'fs';
 import Table from '.';
 import Area from './area';
 import Canvas from './canvas';
@@ -13,14 +14,20 @@ function renderLines(canvas: Canvas, { width, color }: LineStyle, cb: () => void
   }
 }
 
-function renderCell(canvas: Canvas, cell: Cell | string | number, rect: Rect, defaultStyle: CellStyle) {
+function renderCell(
+  canvas: Canvas,
+  cell: Cell | string | number | undefined,
+  rect: Rect,
+  defaultStyle: CellStyle,
+  styles: CellStyle[]
+) {
   let text = '';
   let nstyle = defaultStyle;
   if (cell) {
     if (typeof cell === 'string' || typeof cell === 'number') text = `${cell}`;
     else {
       text = (cell.value || '') + '';
-      if (cell.style) nstyle = { ...defaultStyle, ...cell.style };
+      if (cell.style) nstyle = { ...defaultStyle, ...styles[cell.style] };
     }
   }
   cellRender(canvas, text, rect, nstyle);
@@ -45,6 +52,7 @@ function renderArea(
   cell: CellFunc,
   defaultCellStyle: CellStyle,
   defaultLineStyle: LineStyle,
+  styles: CellStyle[],
   merges?: string[] | null,
   row?: RowFunc,
   col?: ColFunc
@@ -59,14 +67,20 @@ function renderArea(
 
   const mergeCellStyle = (r: number, c: number) => {
     const cstyle = { ...defaultCellStyle };
-    if (row) Object.assign(cstyle, row(r)?.style);
-    if (col) Object.assign(cstyle, col(c)?.style);
+    if (row) {
+      const r1 = row(r);
+      if (r1 && r1.style) Object.assign(cstyle, styles[r1.style]);
+    }
+    if (col) {
+      const c1 = col(c);
+      if (c1 && c1.style) Object.assign(cstyle, styles[c1.style]);
+    }
     return cstyle;
   };
 
   // render cells
   area.each((r, c, rect) => {
-    renderCell(canvas, cell(r, c), rect, mergeCellStyle(r, c));
+    renderCell(canvas, cell(r, c), rect, mergeCellStyle(r, c), styles);
   });
 
   // render merges
@@ -77,7 +91,8 @@ function renderArea(
           canvas,
           cell(it.startRow, it.startCol),
           area.rect(it),
-          mergeCellStyle(it.startRow, it.startCol)
+          mergeCellStyle(it.startRow, it.startCol),
+          styles
         );
       }
     });
@@ -92,6 +107,7 @@ function renderBody(canvas: Canvas, area: Area | null, table: Table) {
     table._cell,
     table._cellStyle,
     table._lineStyle,
+    table._styles,
     table._merges,
     table._row,
     table._col
@@ -101,14 +117,14 @@ function renderBody(canvas: Canvas, area: Area | null, table: Table) {
 function renderRowHeader(canvas: Canvas, area: Area | null, table: Table) {
   const { cell, width, merges, cols } = table._rowHeader;
   if (width > 0) {
-    renderArea(canvas, area, cell, table._headerCellStyle, table._headerLineStyle, merges);
+    renderArea(canvas, area, cell, table._headerCellStyle, table._headerLineStyle, table._styles, merges);
   }
 }
 
 function renderColHeader(canvas: Canvas, area: Area | null, table: Table) {
   const { cell, height, merges, rows } = table._colHeader;
   if (height > 0) {
-    renderArea(canvas, area, cell, table._headerCellStyle, table._headerLineStyle, merges);
+    renderArea(canvas, area, cell, table._headerCellStyle, table._headerLineStyle, table._styles, merges);
   }
 }
 
@@ -159,7 +175,7 @@ export function render(table: Table) {
         () => _colHeader.height,
         () => _rowHeader.width
       );
-      renderArea(canvas, area0, () => '', table._headerCellStyle, table._headerLineStyle);
+      renderArea(canvas, area0, () => '', table._headerCellStyle, table._headerLineStyle, table._styles);
     }
   }
 }

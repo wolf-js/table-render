@@ -30,14 +30,14 @@ export declare type CellStyle = {
 export declare type Cell = {
     value: string | number;
     type?: string;
-    style?: CellStyle;
+    style?: number;
 };
-export declare type CellFunc = (rowIndex: number, colIndex: number) => Cell | string | number;
+export declare type CellFunc = (rowIndex: number, colIndex: number) => Cell | string | number | undefined;
 export declare type Row = {
     height: number;
     hide?: boolean;
     autoFit?: boolean;
-    style?: CellStyle;
+    style?: number;
 };
 export declare type RowFunc = (index: number) => Partial<Row> | undefined;
 export declare type RowHeightFunc = (index: number) => number;
@@ -45,7 +45,7 @@ export declare type Col = {
     width: number;
     hide?: boolean;
     autoFit?: boolean;
-    style?: CellStyle;
+    style?: number;
 };
 export declare type ColFunc = (index: number) => Partial<Col> | undefined;
 export declare type ColWidthFunc = (index: number) => number;

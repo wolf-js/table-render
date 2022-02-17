@@ -55,6 +55,7 @@ export default class Table {
      */
     _cell: CellFunc;
     _merges: string[];
+    _styles: CellStyle[];
     _lineStyle: LineStyle;
     _cellStyle: CellStyle;
     _rowHeader: RowHeader;
@@ -79,8 +80,9 @@ export default class Table {
     scrollCols(value: number): this;
     row(value: RowFunc): this;
     col(value: ColFunc): this;
-    cell(value: (rowIndex: number, colIndex: number) => Cell | string | number): this;
+    cell(value: (rowIndex: number, colIndex: number) => Cell | string | number | undefined): this;
     merges(value?: string[]): this;
+    styles(value?: CellStyle[]): this;
     lineStyle(value: Partial<LineStyle>): this;
     cellStyle(value: Partial<CellStyle>): this;
     rowHeader(value?: Partial<RowHeader>): this;

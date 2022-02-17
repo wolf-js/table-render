@@ -35,16 +35,16 @@ export type CellStyle = {
 export type Cell = {
   value: string | number;
   type?: string;
-  style?: CellStyle;
+  style?: number;
 };
 
-export type CellFunc = (rowIndex: number, colIndex: number) => Cell | string | number;
+export type CellFunc = (rowIndex: number, colIndex: number) => Cell | string | number | undefined;
 
 export type Row = {
   height: number;
   hide?: boolean;
   autoFit?: boolean;
-  style?: CellStyle;
+  style?: number;
 };
 
 export type RowFunc = (index: number) => Partial<Row> | undefined;
@@ -54,7 +54,7 @@ export type Col = {
   width: number;
   hide?: boolean;
   autoFit?: boolean;
-  style?: CellStyle;
+  style?: number;
 };
 
 export type ColFunc = (index: number) => Partial<Col> | undefined;
