@@ -24,7 +24,7 @@ import Viewport from './viewport';
  * }
  */
 
-export default class Table {
+export default class TableRender {
   _target: HTMLCanvasElement;
 
   // table width
@@ -295,10 +295,10 @@ export default class Table {
     Object.assign(this._freezeLineStyle, value);
     return this;
   }
+}
 
-  static create(container: string | HTMLCanvasElement, width: number, height: number) {
-    return new Table(container, width, height);
-  }
+export function createTableRender(container: string | HTMLCanvasElement, width: number, height: number) {
+  return new TableRender(container, width, height);
 }
 
 export { expr2xy, xy2expr };

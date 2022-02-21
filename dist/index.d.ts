@@ -22,7 +22,7 @@ import Viewport from './viewport';
  *   type: text | button | link | checkbox | radio | list | progress | image | imageButton | date
  * }
  */
-export default class Table {
+export default class TableRender {
     _target: HTMLCanvasElement;
     _width: number;
     _height: number;
@@ -91,6 +91,6 @@ export default class Table {
     headerCellStyle(value?: Partial<CellStyle>): this;
     freeze(ref?: string): this;
     freezeLineStyle(value: Partial<LineStyle>): this;
-    static create(container: string | HTMLCanvasElement, width: number, height: number): Table;
 }
+export declare function createTableRender(container: string | HTMLCanvasElement, width: number, height: number): TableRender;
 export { expr2xy, xy2expr };
