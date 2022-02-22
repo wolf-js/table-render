@@ -5,7 +5,7 @@ function cellText(ri: number, ci: number): string {
   return ri === 8 && ci === 1 ? longText : `${ri}-${ci}`;
 }
 
-Table.create('#table', 800, 500)
+new Table('#table', 800, 500)
   .scale(1.1)
   .colHeader({ height: 50, rows: 2, merges: ['A1:C1', 'D1:D2'] })
   .merges(['G10:H11', 'B9:D10'])

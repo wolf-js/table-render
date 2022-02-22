@@ -1,4 +1,3 @@
-import { rmSync } from 'fs';
 import Table from '.';
 import Area from './area';
 import Canvas from './canvas';

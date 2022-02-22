@@ -6,8 +6,8 @@ module.exports = merge(common, {
   entry: {
     'table-render': './index-dev.ts',
   },
-  mode: 'development',
   devtool: 'inline-source-map',
+  mode: 'development',
   plugins: [
     new HtmlWebpackPlugin({
       template: './index.html',

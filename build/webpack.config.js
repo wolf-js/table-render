@@ -8,7 +8,7 @@ module.exports = {
     rules: [
       {
         test: /\.ts$/,
-        use: 'ts-loader',
+        use: 'babel-loader',
         exclude: /node_modules/,
       },
     ],
@@ -20,5 +20,6 @@ module.exports = {
     filename: '[name].js',
     path: path.resolve(__dirname, '../dist'),
     clean: true,
+    libraryTarget: 'commonjs2',
   },
 };
