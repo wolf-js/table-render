@@ -33,7 +33,7 @@ export default class TableRender {
   // table height
   _height = 0;
 
-  _scale = window.devicePixelRatio || 1;
+  _scale = 1;
 
   // the count of rows
   _rows = 100;
