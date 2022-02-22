@@ -27,7 +27,6 @@
   },
   "homepage": "https://github.com/wolf-js/table-render#readme",
   "devDependencies": {
-    "@babel/cli": "^7.17.3",
     "@babel/core": "^7.17.5",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-typescript": "^7.16.7",

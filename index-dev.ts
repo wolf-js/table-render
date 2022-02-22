@@ -1,11 +1,11 @@
-import Table from './src';
+import { createTableRender } from './src';
 const longText = 'you are a good boy, a very good boy-------!!!';
 
 function cellText(ri: number, ci: number): string {
   return ri === 8 && ci === 1 ? longText : `${ri}-${ci}`;
 }
 
-new Table('#table', 800, 500)
+createTableRender('#table', 800, 500)
   .scale(1.1)
   .colHeader({ height: 50, rows: 2, merges: ['A1:C1', 'D1:D2'] })
   .merges(['G10:H11', 'B9:D10'])
