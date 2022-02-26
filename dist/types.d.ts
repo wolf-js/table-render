@@ -53,14 +53,12 @@ export declare type RowHeader = {
     width: number;
     cols: number;
     cell: CellFunc;
-    colWidth: number;
     merges?: string[];
 };
 export declare type ColHeader = {
     height: number;
     rows: number;
     cell: CellFunc;
-    rowHeight: number;
     merges?: string[];
 };
 export declare type Rect = {

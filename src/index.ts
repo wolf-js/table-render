@@ -112,9 +112,6 @@ export default class TableRender {
     cell(rowIndex, colIndex) {
       return rowIndex + 1;
     },
-    get colWidth() {
-      return this.width / this.cols;
-    },
   };
 
   // column header
@@ -123,9 +120,6 @@ export default class TableRender {
     rows: 1,
     cell(rowIndex, colIndex) {
       return stringAt(colIndex);
-    },
-    get rowHeight() {
-      return this.height / this.rows;
     },
   };
 

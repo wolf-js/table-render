@@ -64,7 +64,6 @@ export type RowHeader = {
   width: number;
   cols: number;
   cell: CellFunc;
-  colWidth: number;
   merges?: string[];
 };
 
@@ -72,7 +71,6 @@ export type ColHeader = {
   height: number;
   rows: number;
   cell: CellFunc;
-  rowHeight: number;
   merges?: string[];
 };
 

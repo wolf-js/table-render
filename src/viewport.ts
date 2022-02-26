@@ -99,8 +99,8 @@ export default class Viewport {
 
     // header areas
     const { _rowHeader, _colHeader } = table;
-    const getColHeaderRow = () => _colHeader.rowHeight;
-    const getRowHeaderCol = () => _rowHeader.colWidth;
+    const getColHeaderRow = () => _colHeader.height / _colHeader.rows;
+    const getRowHeaderCol = () => _rowHeader.width / _rowHeader.cols;
 
     // 1, 2-1, 2-3, 3,
     this.headerAreas = [
