@@ -289,10 +289,26 @@ export default class TableRender {
     Object.assign(this._freezeLineStyle, value);
     return this;
   }
+
+  // get methods ---- start ------
+  rowHeightAt(index: number) {
+    const r = this._row(index);
+    return r?.hide ? 0 : r?.height || this._rowHeight;
+  }
+
+  colWidthAt(index: number) {
+    const c = this._col(index);
+    return c?.hide ? 0 : c?.width || this._colWidth;
+  }
+
+  cellAt(x: number, y: number) {
+    return this._viewport?.cell(x, y);
+  }
+  // get methods ---- end -------
 }
 
 export function createTableRender(container: string | HTMLCanvasElement, width: number, height: number) {
   return new TableRender(container, width, height);
 }
 
-export { expr2xy, xy2expr };
+export { expr2xy, xy2expr, stringAt };

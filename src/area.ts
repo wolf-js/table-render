@@ -1,4 +1,4 @@
-import { Rect } from './types';
+import { Rect, ViewCell } from './types';
 import Range from './range';
 
 export default class Area {
@@ -31,6 +31,26 @@ export default class Area {
         this.width += width;
       }
     });
+  }
+
+  /**
+   * check whether or not x contained in area
+   * @param {int} x offset on x-axis
+   */
+  containsx(x: number) {
+    return x >= this.x && x < this.x + this.width;
+  }
+
+  /**
+   * check whether or not y contained in area
+   * @param {int} y offset on y-axis
+   */
+  containsy(y: number) {
+    return y >= this.y && y < this.y + this.height;
+  }
+
+  contains(x: number, y: number) {
+    return this.containsx(x) && this.containsy(y);
   }
 
   eachRow(cb: (index: number, y: number, height: number) => void) {
@@ -84,6 +104,29 @@ export default class Area {
     });
 
     return ret;
+  }
+
+  cell(x: number, y: number): ViewCell | null {
+    if (!this.contains(x, y)) return null;
+    const { range } = this;
+    const vcell = { row: range.startRow, col: range.startCol, x: this.x, y: this.y, width: 0, height: 0 };
+
+    // row
+    while (vcell.y <= y) {
+      const h = this.rowHeight(vcell.row++);
+      vcell.y += h;
+      vcell.height = h;
+    }
+    vcell.y -= vcell.height;
+
+    // col
+    while (vcell.x <= x) {
+      const w = this.colWidth(vcell.col++);
+      vcell.x += w;
+      vcell.width = w;
+    }
+    vcell.x -= vcell.width;
+    return vcell;
   }
 
   static create(

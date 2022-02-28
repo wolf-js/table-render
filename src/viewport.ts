@@ -1,5 +1,7 @@
-import Table from '.';
+import TableRender from '.';
 import Area from './area';
+import { findRanges } from './range';
+import { ViewCell } from './types';
 
 export default class Viewport {
   /**
@@ -22,24 +24,17 @@ export default class Viewport {
    */
   headerAreas: Area[];
 
-  constructor(table: Table) {
+  _table: TableRender;
+
+  constructor(table: TableRender) {
+    this._table = table;
+
     const [tx, ty] = [table._rowHeader.width, table._colHeader.height];
     const [fcols, frows] = table._freeze;
-
-    const getRowHeight = (index: number): number => {
-      const r = table._row(index);
-      return r?.hide ? 0 : r?.height || table._rowHeight;
-    };
-    Object.assign({ height: table._rowHeight });
-    const getColWidth = (index: number): number => {
-      const c = table._col(index);
-      return c?.hide ? 0 : c?.width || table._colWidth;
-    };
-
-    const { _startRow, _startCol, _rows, _cols } = table;
+    const { _startRow, _startCol, _rows, _cols, rowHeightAt, colWidthAt } = table;
 
     // area2
-    const area2 = Area.create(_startRow, _startCol, frows - 1, fcols - 1, tx, ty, getRowHeight, getColWidth);
+    const area2 = Area.create(_startRow, _startCol, frows - 1, fcols - 1, tx, ty, rowHeightAt, colWidthAt);
 
     const [startRow4, startCol4] = [frows + table._scrollRows, fcols + table._scrollCols];
 
@@ -47,7 +42,7 @@ export default class Viewport {
     let y = area2.height;
     let endRow = startRow4;
     while (y < table._height && endRow < _rows) {
-      y += getRowHeight(endRow);
+      y += rowHeightAt(endRow);
       endRow += 1;
     }
 
@@ -55,7 +50,7 @@ export default class Viewport {
     let x = area2.width;
     let endCol = startCol4;
     while (x < table._width && endCol < _cols) {
-      x += getColWidth(endCol);
+      x += colWidthAt(endCol);
       endCol += 1;
     }
 
@@ -67,8 +62,8 @@ export default class Viewport {
       endCol - 1,
       tx + area2.width,
       ty + area2.height,
-      getRowHeight,
-      getColWidth
+      rowHeightAt,
+      colWidthAt
     );
 
     // area1
@@ -79,8 +74,8 @@ export default class Viewport {
       endCol - 1,
       tx + area2.width,
       ty,
-      getRowHeight,
-      getColWidth
+      rowHeightAt,
+      colWidthAt
     );
 
     // area3
@@ -91,8 +86,8 @@ export default class Viewport {
       fcols - 1,
       tx,
       ty + area2.height,
-      getRowHeight,
-      getColWidth
+      rowHeightAt,
+      colWidthAt
     );
 
     this.areas = [area1, area2, area3, area4];
@@ -112,7 +107,7 @@ export default class Viewport {
         area4.x,
         0,
         getColHeaderRow,
-        getColWidth
+        colWidthAt
       ),
       Area.create(
         0,
@@ -122,7 +117,7 @@ export default class Viewport {
         area2.x,
         0,
         getColHeaderRow,
-        getColWidth
+        colWidthAt
       ),
       Area.create(
         area2.range.startRow,
@@ -131,7 +126,7 @@ export default class Viewport {
         _rowHeader.cols - 1,
         0,
         area2.y,
-        getRowHeight,
+        rowHeightAt,
         getRowHeaderCol
       ),
       Area.create(
@@ -141,9 +136,49 @@ export default class Viewport {
         _rowHeader.cols - 1,
         0,
         area4.y,
-        getRowHeight,
+        rowHeightAt,
         getRowHeaderCol
       ),
     ];
+  }
+
+  cell(x: number, y: number): ['all' | 'row-header' | 'col-header' | 'body', ViewCell | null] | null {
+    const [a1, a2, a3, a4] = this.areas;
+    const [ha1, ha21, ha23, ha3] = this.headerAreas;
+
+    const inRowHeader = x < a2.x;
+    const inColHeader = y < a2.y;
+    if (inRowHeader && inColHeader) {
+      return ['all', { row: 0, col: 0, x: 0, y: 0, width: a2.x, height: a2.y }];
+    }
+
+    if (inRowHeader) {
+      if (ha23.containsy(y)) {
+        return ['row-header', ha23.cell(x, y)];
+      }
+      return ['row-header', ha3.cell(x, y)];
+    }
+
+    if (inColHeader) {
+      if (ha21.containsx(y)) {
+        return ['col-header', ha21.cell(x, y)];
+      }
+      return ['col-header', ha1.cell(x, y)];
+    }
+
+    for (let a of this.areas) {
+      if (a.contains(x, y)) {
+        const c = a.cell(x, y);
+        if (c) {
+          const r = findRanges(this._table._merges, (it) => it.contains(c.row, c.col));
+          if (r) {
+            return ['body', { row: r.startRow, col: r.startCol, ...a.rect(r) }];
+          }
+          return ['body', c];
+        }
+      }
+    }
+
+    return null;
   }
 }

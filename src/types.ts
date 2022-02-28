@@ -80,3 +80,8 @@ export type Rect = {
   width: number;
   height: number;
 };
+
+export type ViewCell = {
+  row: number;
+  col: number;
+} & Rect;

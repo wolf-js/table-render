@@ -162,3 +162,13 @@ export function eachRanges(refs: string[], cb: (range: Range) => void) {
     });
   }
 }
+
+export function findRanges(refs: string[], filter: (it: Range) => boolean) {
+  if (refs && refs.length > 0) {
+    for (let ref of refs) {
+      const r = newRange(ref);
+      if (filter(r)) return r;
+    }
+  }
+  return null;
+}
