@@ -31,10 +31,13 @@ export default class Viewport {
 
     const [tx, ty] = [table._rowHeader.width, table._colHeader.height];
     const [fcols, frows] = table._freeze;
-    const { _startRow, _startCol, _rows, _cols, rowHeightAt, colWidthAt } = table;
+    const { _startRow, _startCol, _rows, _cols } = table;
+
+    const getRowHeight = (index: number) => table.rowHeightAt(index);
+    const getColWidth = (index: number) => table.colWidthAt(index);
 
     // area2
-    const area2 = Area.create(_startRow, _startCol, frows - 1, fcols - 1, tx, ty, rowHeightAt, colWidthAt);
+    const area2 = Area.create(_startRow, _startCol, frows - 1, fcols - 1, tx, ty, getRowHeight, getColWidth);
 
     const [startRow4, startCol4] = [frows + table._scrollRows, fcols + table._scrollCols];
 
@@ -42,7 +45,7 @@ export default class Viewport {
     let y = area2.height;
     let endRow = startRow4;
     while (y < table._height && endRow < _rows) {
-      y += rowHeightAt(endRow);
+      y += getRowHeight(endRow);
       endRow += 1;
     }
 
@@ -50,7 +53,7 @@ export default class Viewport {
     let x = area2.width;
     let endCol = startCol4;
     while (x < table._width && endCol < _cols) {
-      x += colWidthAt(endCol);
+      x += getColWidth(endCol);
       endCol += 1;
     }
 
@@ -62,8 +65,8 @@ export default class Viewport {
       endCol - 1,
       tx + area2.width,
       ty + area2.height,
-      rowHeightAt,
-      colWidthAt
+      getRowHeight,
+      getColWidth
     );
 
     // area1
@@ -74,8 +77,8 @@ export default class Viewport {
       endCol - 1,
       tx + area2.width,
       ty,
-      rowHeightAt,
-      colWidthAt
+      getRowHeight,
+      getColWidth
     );
 
     // area3
@@ -86,8 +89,8 @@ export default class Viewport {
       fcols - 1,
       tx,
       ty + area2.height,
-      rowHeightAt,
-      colWidthAt
+      getRowHeight,
+      getColWidth
     );
 
     this.areas = [area1, area2, area3, area4];
@@ -107,7 +110,7 @@ export default class Viewport {
         area4.x,
         0,
         getColHeaderRow,
-        colWidthAt
+        getColWidth
       ),
       Area.create(
         0,
@@ -117,7 +120,7 @@ export default class Viewport {
         area2.x,
         0,
         getColHeaderRow,
-        colWidthAt
+        getColWidth
       ),
       Area.create(
         area2.range.startRow,
@@ -126,7 +129,7 @@ export default class Viewport {
         _rowHeader.cols - 1,
         0,
         area2.y,
-        rowHeightAt,
+        getRowHeight,
         getRowHeaderCol
       ),
       Area.create(
@@ -136,7 +139,7 @@ export default class Viewport {
         _rowHeader.cols - 1,
         0,
         area4.y,
-        rowHeightAt,
+        getRowHeight,
         getRowHeaderCol
       ),
     ];

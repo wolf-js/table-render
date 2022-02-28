@@ -292,13 +292,21 @@ export default class TableRender {
 
   // get methods ---- start ------
   rowHeightAt(index: number) {
-    const r = this._row(index);
-    return r?.hide ? 0 : r?.height || this._rowHeight;
+    const { _row } = this;
+    if (_row) {
+      const r = _row(index);
+      if (r) r.hide ? 0 : r.height;
+    }
+    return this._rowHeight;
   }
 
   colWidthAt(index: number) {
-    const c = this._col(index);
-    return c?.hide ? 0 : c?.width || this._colWidth;
+    const { _col } = this;
+    if (_col) {
+      const c = _col(index);
+      if (c) c.hide ? 0 : c.width;
+    }
+    return this._colWidth;
   }
 
   cellAt(x: number, y: number) {
