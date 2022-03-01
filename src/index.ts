@@ -313,10 +313,21 @@ export default class TableRender {
     return this._viewport?.cell(x, y);
   }
   // get methods ---- end -------
-}
 
-export function createTableRender(container: string | HTMLCanvasElement, width: number, height: number) {
-  return new TableRender(container, width, height);
+  static create(container: string | HTMLCanvasElement, width: number, height: number) {
+    return new TableRender(container, width, height);
+  }
 }
 
 export { expr2xy, xy2expr, stringAt };
+
+declare global {
+  interface Window {
+    wolf: any;
+  }
+}
+
+if (window) {
+  window.wolf ||= {};
+  window.wolf.table_render = TableRender.create;
+}
