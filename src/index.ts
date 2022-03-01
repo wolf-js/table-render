@@ -291,20 +291,20 @@ export default class TableRender {
   }
 
   // get methods ---- start ------
-  rowHeightAt(index: number) {
+  rowHeightAt(index: number): number {
     const { _row } = this;
     if (_row) {
       const r = _row(index);
-      if (r) r.hide ? 0 : r.height;
+      if (r) return r.hide ? 0 : r.height;
     }
     return this._rowHeight;
   }
 
-  colWidthAt(index: number) {
+  colWidthAt(index: number): number {
     const { _col } = this;
     if (_col) {
       const c = _col(index);
-      if (c) c.hide ? 0 : c.width;
+      if (c) return c.hide ? 0 : c.width;
     }
     return this._colWidth;
   }

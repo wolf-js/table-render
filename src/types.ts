@@ -47,7 +47,7 @@ export type Row = {
   style?: number;
 };
 
-export type RowFunc = (index: number) => Partial<Row> | undefined;
+export type RowFunc = (index: number) => Row | undefined;
 export type RowHeightFunc = (index: number) => number;
 
 export type Col = {
@@ -57,7 +57,7 @@ export type Col = {
   style?: number;
 };
 
-export type ColFunc = (index: number) => Partial<Col> | undefined;
+export type ColFunc = (index: number) => Col | undefined;
 export type ColWidthFunc = (index: number) => number;
 
 export type RowHeader = {

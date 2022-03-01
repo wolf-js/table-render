@@ -108,24 +108,34 @@ export default class Area {
 
   cell(x: number, y: number): ViewCell | null {
     if (!this.contains(x, y)) return null;
-    const { range } = this;
-    const vcell = { row: range.startRow, col: range.startCol, x: this.x, y: this.y, width: 0, height: 0 };
+    const { startRow, startCol } = this.range;
+    const vcell = {
+      row: startRow,
+      col: startCol,
+      x: this.x,
+      y: this.y,
+      width: 0,
+      height: 0,
+    };
 
     // row
-    while (vcell.y <= y) {
+    while (vcell.y < y) {
       const h = this.rowHeight(vcell.row++);
       vcell.y += h;
       vcell.height = h;
     }
     vcell.y -= vcell.height;
+    vcell.row--;
 
     // col
-    while (vcell.x <= x) {
+    while (vcell.x < x) {
       const w = this.colWidth(vcell.col++);
       vcell.x += w;
       vcell.width = w;
     }
     vcell.x -= vcell.width;
+    vcell.col--;
+
     return vcell;
   }
 
