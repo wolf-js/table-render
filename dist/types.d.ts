@@ -39,7 +39,7 @@ export declare type Row = {
     autoFit?: boolean;
     style?: number;
 };
-export declare type RowFunc = (index: number) => Partial<Row> | undefined;
+export declare type RowFunc = (index: number) => Row | undefined;
 export declare type RowHeightFunc = (index: number) => number;
 export declare type Col = {
     width: number;
@@ -47,7 +47,7 @@ export declare type Col = {
     autoFit?: boolean;
     style?: number;
 };
-export declare type ColFunc = (index: number) => Partial<Col> | undefined;
+export declare type ColFunc = (index: number) => Col | undefined;
 export declare type ColWidthFunc = (index: number) => number;
 export declare type RowHeader = {
     width: number;
@@ -67,3 +67,7 @@ export declare type Rect = {
     width: number;
     height: number;
 };
+export declare type ViewCell = {
+    row: number;
+    col: number;
+} & Rect;

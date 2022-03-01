@@ -1,4 +1,4 @@
-import { expr2xy, xy2expr } from './alphabet';
+import { stringAt, expr2xy, xy2expr } from './alphabet';
 import { LineStyle, CellStyle, Cell, RowHeader, ColHeader, CellFunc, ColFunc, RowFunc } from './types';
 import Viewport from './viewport';
 /**
@@ -91,6 +91,14 @@ export default class TableRender {
     headerCellStyle(value?: Partial<CellStyle>): this;
     freeze(ref?: string): this;
     freezeLineStyle(value: Partial<LineStyle>): this;
+    rowHeightAt(index: number): number;
+    colWidthAt(index: number): number;
+    cellAt(x: number, y: number): import("./viewport").ViewportCellResult | undefined;
+    static create(container: string | HTMLCanvasElement, width: number, height: number): TableRender;
 }
-export declare function createTableRender(container: string | HTMLCanvasElement, width: number, height: number): TableRender;
-export { expr2xy, xy2expr };
+export { expr2xy, xy2expr, stringAt };
+declare global {
+    interface Window {
+        wolf: any;
+    }
+}

@@ -76,3 +76,4 @@ export default class Range {
 }
 export declare function newRange(ref: string): Range;
 export declare function eachRanges(refs: string[], cb: (range: Range) => void): void;
+export declare function findRanges(refs: string[], filter: (it: Range) => boolean): Range | null;

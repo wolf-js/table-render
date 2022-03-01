@@ -1,4 +1,4 @@
-import { Rect } from './types';
+import { Rect, ViewCell } from './types';
 import Range from './range';
 export default class Area {
     readonly range: Range;
@@ -17,6 +17,17 @@ export default class Area {
         width: number;
     }>;
     constructor(range: Range, x: number, y: number, rowHeight: (index: number) => number, colWidth: (index: number) => number);
+    /**
+     * check whether or not x contained in area
+     * @param {int} x offset on x-axis
+     */
+    containsx(x: number): boolean;
+    /**
+     * check whether or not y contained in area
+     * @param {int} y offset on y-axis
+     */
+    containsy(y: number): boolean;
+    contains(x: number, y: number): boolean;
     eachRow(cb: (index: number, y: number, height: number) => void): void;
     eachCol(cb: (index: number, x: number, width: number) => void): void;
     each(cb: (row: number, col: number, rect: Rect) => void): void;
@@ -26,5 +37,6 @@ export default class Area {
         width: number;
         height: number;
     };
+    cell(x: number, y: number): ViewCell | null;
     static create(startRow: number, startCol: number, endRow: number, endCol: number, x: number, y: number, rowHeight: (index: number) => number, colWidth: (index: number) => number): Area;
 }
