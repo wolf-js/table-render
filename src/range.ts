@@ -146,6 +146,24 @@ export default class Range {
   clone(): Range {
     return new Range(this.startRow, this.startCol, this.endRow, this.endCol);
   }
+
+  static create(row: number, col: number): Range;
+  static create(row: number, col: number, row1: number, col1: number): Range;
+  static create(row: number, col: number, row1?: number, col1?: number): Range {
+    if (row1 && col1) {
+      let [startRow, startCol, endRow, endCol] = [row, col, row1, col1];
+      if (row > row1) {
+        startRow = row1;
+        endRow = row;
+      }
+      if (col > col1) {
+        startCol = col1;
+        endCol = col;
+      }
+      return new Range(startRow, startCol, endRow, endCol);
+    }
+    return new Range(row, col, row, col);
+  }
 }
 
 export function newRange(ref: string): Range {

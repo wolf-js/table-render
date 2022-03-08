@@ -1,4 +1,5 @@
 import { stringAt, expr2xy, xy2expr } from './alphabet';
+import Range from './range';
 import { render } from './render';
 import { LineStyle, CellStyle, Cell, RowHeader, ColHeader, CellFunc, ColFunc, RowFunc } from './types';
 import Viewport from './viewport';
@@ -319,7 +320,7 @@ export default class TableRender {
   }
 }
 
-export { expr2xy, xy2expr, stringAt };
+export { expr2xy, xy2expr, stringAt, Range };
 
 declare global {
   interface Window {

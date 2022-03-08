@@ -1,6 +1,5 @@
 import { Rect, ViewCell } from './types';
 import Range from './range';
-import TableRender from '.';
 
 export default class Area {
   width = 0;
