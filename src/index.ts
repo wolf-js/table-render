@@ -310,8 +310,8 @@ export default class TableRender {
     return this._colWidth;
   }
 
-  cellAt(x: number, y: number) {
-    return this._viewport?.cell(x, y);
+  get viewport() {
+    return this._viewport;
   }
   // get methods ---- end -------
 
@@ -320,7 +320,7 @@ export default class TableRender {
   }
 }
 
-export { expr2xy, xy2expr, stringAt, Range };
+export { expr2xy, xy2expr, stringAt, Range, Viewport };
 
 declare global {
   interface Window {

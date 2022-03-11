@@ -1,5 +1,10 @@
-import { Rect, ViewCell } from './types';
+import { Rect } from './types';
 import Range from './range';
+
+export type AreaCell = {
+  row: number;
+  col: number;
+} & Rect;
 
 export default class Area {
   width = 0;
@@ -106,10 +111,25 @@ export default class Area {
     return ret;
   }
 
-  cell(x: number, y: number): ViewCell | null {
+  cellAtCache: AreaCell | null = null;
+  cellAt(x: number, y: number): AreaCell | null {
     if (!this.contains(x, y)) return null;
+
+    // whether or not in cache
+    const { cellAtCache } = this;
+    if (cellAtCache != null) {
+      if (
+        x > cellAtCache.x &&
+        x <= cellAtCache.x + cellAtCache.width &&
+        y > cellAtCache.y &&
+        y <= cellAtCache.y + cellAtCache.height
+      ) {
+        return cellAtCache;
+      }
+    }
+
     const { startRow, startCol } = this.range;
-    const vcell = {
+    const cell = {
       row: startRow,
       col: startCol,
       x: this.x,
@@ -119,24 +139,25 @@ export default class Area {
     };
 
     // row
-    while (vcell.y < y) {
-      const h = this.rowHeight(vcell.row++);
-      vcell.y += h;
-      vcell.height = h;
+    while (cell.y < y) {
+      const h = this.rowHeight(cell.row++);
+      cell.y += h;
+      cell.height = h;
     }
-    vcell.y -= vcell.height;
-    vcell.row--;
+    cell.y -= cell.height;
+    cell.row--;
 
     // col
-    while (vcell.x < x) {
-      const w = this.colWidth(vcell.col++);
-      vcell.x += w;
-      vcell.width = w;
+    while (cell.x < x) {
+      const w = this.colWidth(cell.col++);
+      cell.x += w;
+      cell.width = w;
     }
-    vcell.x -= vcell.width;
-    vcell.col--;
+    cell.x -= cell.width;
+    cell.col--;
 
-    return vcell;
+    this.cellAtCache = cell;
+    return cell;
   }
 
   static create(

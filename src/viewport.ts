@@ -1,9 +1,5 @@
 import TableRender from '.';
 import Area from './area';
-import { findRanges } from './range';
-import { ViewCell } from './types';
-
-export type ViewportCellResult = ['all' | 'row-header' | 'col-header' | 'body', ViewCell | null] | null;
 
 export default class Viewport {
   /**
@@ -147,57 +143,30 @@ export default class Viewport {
     ];
   }
 
-  _cellResultCache: ViewportCellResult = null;
-
-  clearCache() {
-    this._cellResultCache = null;
+  cellAtRowHeader(x: number, y: number) {
+    const a2 = this.areas[1];
+    const [, , ha23, ha3] = this.headerAreas;
+    if (x < a2.x) {
+      return (ha23.containsy(y) ? ha23 : ha3).cellAt(x, y);
+    }
+    return null;
   }
 
-  cell(x: number, y: number): ViewportCellResult {
-    if (this._cellResultCache != null) {
-      const [type, c] = this._cellResultCache;
-      if (c && x > c.x && x <= c.x + c.width && y > c.y && y < c.y + c.height) {
-        return [type, c];
+  cellAtColHeader(x: number, y: number) {
+    const a2 = this.areas[1];
+    const [ha1, ha21] = this.headerAreas;
+    if (y < a2.y) {
+      return (ha21.containsx(x) ? ha21 : ha1).cellAt(x, y);
+    }
+    return null;
+  }
+
+  cellAt(x: number, y: number) {
+    for (let a of this.areas) {
+      if (a.contains(x, y)) {
+        return a.cellAt(x, y);
       }
     }
-    const [a1, a2, a3, a4] = this.areas;
-    const [ha1, ha21, ha23, ha3] = this.headerAreas;
-
-    const inRowHeader = x < a2.x;
-    const inColHeader = y < a2.y;
-    let ret: ViewportCellResult = null;
-    if (inRowHeader && inColHeader) {
-      ret = ['all', { row: 0, col: 0, x: 0, y: 0, width: a2.x, height: a2.y }];
-    } else if (inRowHeader) {
-      if (ha23.containsy(y)) {
-        ret = ['row-header', ha23.cell(x, y)];
-      } else {
-        ret = ['row-header', ha3.cell(x, y)];
-      }
-    } else if (inColHeader) {
-      if (ha21.containsx(y)) {
-        ret = ['col-header', ha21.cell(x, y)];
-      } else {
-        ret = ['col-header', ha1.cell(x, y)];
-      }
-    } else {
-      for (let a of this.areas) {
-        if (a.contains(x, y)) {
-          const c = a.cell(x, y);
-          if (c) {
-            const r = findRanges(this._table._merges, (it) => it.contains(c.row, c.col));
-            if (r) {
-              ret = ['body', { row: r.startRow, col: r.startCol, ...a.rect(r) }];
-            } else {
-              ret = ['body', c];
-            }
-            break;
-          }
-        }
-      }
-    }
-
-    this._cellResultCache = ret;
-    return ret;
+    return null;
   }
 }
