@@ -1,7 +1,6 @@
 import TableRender from '.';
 import Area from './area';
-import { ViewCell } from './types';
-export declare type ViewportCellResult = ['all' | 'row-header' | 'col-header' | 'body', ViewCell | null] | null;
+import { ViewportCell } from './types';
 export default class Viewport {
     /**
      * [area1, area2, area3, area4]
@@ -21,9 +20,7 @@ export default class Viewport {
      *   area-3    |
      */
     headerAreas: Area[];
-    _table: TableRender;
-    constructor(table: TableRender);
-    _cellResultCache: ViewportCellResult;
-    clearCache(): void;
-    cell(x: number, y: number): ViewportCellResult;
+    _render: TableRender;
+    constructor(render: TableRender);
+    cellAt(x: number, y: number): ViewportCell | null;
 }

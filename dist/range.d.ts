@@ -73,6 +73,8 @@ export default class Range {
      */
     each(cb: (rowIndex: number, colIndex: number) => void): Range;
     clone(): Range;
+    static create(row: number, col: number): Range;
+    static create(row: number, col: number, row1: number, col1: number): Range;
 }
 export declare function newRange(ref: string): Range;
 export declare function eachRanges(refs: string[], cb: (range: Range) => void): void;

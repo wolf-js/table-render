@@ -1,4 +1,4 @@
-import { Rect, ViewCell } from './types';
+import { Rect, AreaCell } from './types';
 import Range from './range';
 export default class Area {
     readonly range: Range;
@@ -37,6 +37,7 @@ export default class Area {
         width: number;
         height: number;
     };
-    cell(x: number, y: number): ViewCell | null;
+    cellAtCache: AreaCell | null;
+    cellAt(x: number, y: number): AreaCell;
     static create(startRow: number, startCol: number, endRow: number, endCol: number, x: number, y: number, rowHeight: (index: number) => number, colWidth: (index: number) => number): Area;
 }

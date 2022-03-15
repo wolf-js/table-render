@@ -67,7 +67,10 @@ export declare type Rect = {
     width: number;
     height: number;
 };
-export declare type ViewCell = {
+export declare type AreaCell = {
     row: number;
     col: number;
 } & Rect;
+export declare type ViewportCell = {
+    placement: 'all' | 'row-header' | 'col-header' | 'body';
+} & AreaCell;
