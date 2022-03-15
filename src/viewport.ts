@@ -1,5 +1,6 @@
 import TableRender from '.';
 import Area from './area';
+import { ViewportCell } from './types';
 
 export default class Viewport {
   /**
@@ -22,27 +23,27 @@ export default class Viewport {
    */
   headerAreas: Area[];
 
-  _table: TableRender;
+  _render: TableRender;
 
-  constructor(table: TableRender) {
-    this._table = table;
+  constructor(render: TableRender) {
+    this._render = render;
 
-    const [tx, ty] = [table._rowHeader.width, table._colHeader.height];
-    const [fcols, frows] = table._freeze;
-    const { _startRow, _startCol, _rows, _cols } = table;
+    const [tx, ty] = [render._rowHeader.width, render._colHeader.height];
+    const [fcols, frows] = render._freeze;
+    const { _startRow, _startCol, _rows, _cols } = render;
 
-    const getRowHeight = (index: number) => table.rowHeightAt(index);
-    const getColWidth = (index: number) => table.colWidthAt(index);
+    const getRowHeight = (index: number) => render.rowHeightAt(index);
+    const getColWidth = (index: number) => render.colWidthAt(index);
 
     // area2
     const area2 = Area.create(_startRow, _startCol, frows - 1, fcols - 1, tx, ty, getRowHeight, getColWidth);
 
-    const [startRow4, startCol4] = [frows + table._scrollRows, fcols + table._scrollCols];
+    const [startRow4, startCol4] = [frows + render._scrollRows, fcols + render._scrollCols];
 
     // endRow
     let y = area2.height;
     let endRow = startRow4;
-    while (y < table._height && endRow < _rows) {
+    while (y < render._height && endRow < _rows) {
       y += getRowHeight(endRow);
       endRow += 1;
     }
@@ -50,7 +51,7 @@ export default class Viewport {
     // endCol
     let x = area2.width;
     let endCol = startCol4;
-    while (x < table._width && endCol < _cols) {
+    while (x < render._width && endCol < _cols) {
       x += getColWidth(endCol);
       endCol += 1;
     }
@@ -94,7 +95,7 @@ export default class Viewport {
     this.areas = [area1, area2, area3, area4];
 
     // header areas
-    const { _rowHeader, _colHeader } = table;
+    const { _rowHeader, _colHeader } = render;
     const getColHeaderRow = () => _colHeader.height / _colHeader.rows;
     const getRowHeaderCol = () => _rowHeader.width / _rowHeader.cols;
 
@@ -143,28 +144,20 @@ export default class Viewport {
     ];
   }
 
-  cellAtRowHeader(x: number, y: number) {
+  cellAt(x: number, y: number): ViewportCell | null {
     const a2 = this.areas[1];
-    const [, , ha23, ha3] = this.headerAreas;
+    const [ha1, ha21, ha23, ha3] = this.headerAreas;
+    if (x < a2.x && y < a2.y)
+      return { placement: 'all', row: 0, col: 0, x: 0, y: 0, width: a2.x, height: a2.y };
     if (x < a2.x) {
-      return (ha23.containsy(y) ? ha23 : ha3).cellAt(x, y);
+      return { placement: 'row-header', ...(ha23.containsy(y) ? ha23 : ha3).cellAt(x, y) };
     }
-    return null;
-  }
-
-  cellAtColHeader(x: number, y: number) {
-    const a2 = this.areas[1];
-    const [ha1, ha21] = this.headerAreas;
     if (y < a2.y) {
-      return (ha21.containsx(x) ? ha21 : ha1).cellAt(x, y);
+      return { placement: 'col-header', ...(ha21.containsx(x) ? ha21 : ha1).cellAt(x, y) };
     }
-    return null;
-  }
-
-  cellAt(x: number, y: number) {
     for (let a of this.areas) {
       if (a.contains(x, y)) {
-        return a.cellAt(x, y);
+        return { placement: 'body', ...a.cellAt(x, y) };
       }
     }
     return null;

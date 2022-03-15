@@ -150,7 +150,7 @@ export default class Range {
   static create(row: number, col: number): Range;
   static create(row: number, col: number, row1: number, col1: number): Range;
   static create(row: number, col: number, row1?: number, col1?: number): Range {
-    if (row1 && col1) {
+    if (row1 !== undefined && col1 !== undefined) {
       let [startRow, startCol, endRow, endCol] = [row, col, row1, col1];
       if (row > row1) {
         startRow = row1;

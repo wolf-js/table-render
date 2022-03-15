@@ -81,7 +81,11 @@ export type Rect = {
   height: number;
 };
 
-export type ViewCell = {
+export type AreaCell = {
   row: number;
   col: number;
 } & Rect;
+
+export type ViewportCell = {
+  placement: 'all' | 'row-header' | 'col-header' | 'body';
+} & AreaCell;

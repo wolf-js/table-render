@@ -1,10 +1,5 @@
-import { Rect } from './types';
+import { Rect, AreaCell } from './types';
 import Range from './range';
-
-export type AreaCell = {
-  row: number;
-  col: number;
-} & Rect;
 
 export default class Area {
   width = 0;
@@ -112,9 +107,7 @@ export default class Area {
   }
 
   cellAtCache: AreaCell | null = null;
-  cellAt(x: number, y: number): AreaCell | null {
-    if (!this.contains(x, y)) return null;
-
+  cellAt(x: number, y: number): AreaCell {
     // whether or not in cache
     const { cellAtCache } = this;
     if (cellAtCache != null) {
