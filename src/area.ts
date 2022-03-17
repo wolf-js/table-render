@@ -1,4 +1,4 @@
-import { Rect, AreaCell } from './types';
+import { Rect, AreaCell } from '.';
 import Range from './range';
 
 export default class Area {
@@ -75,35 +75,45 @@ export default class Area {
     });
   }
 
-  rect(r: Range) {
-    const { rowMap, colMap, range } = this;
-    const ret = { x: 0, y: 0, width: 0, height: 0 };
-
+  rectRow(startRow: number, endRow: number) {
+    const { rowMap, range } = this;
+    let [y, height] = [0, 0];
     // row: { y, height }
-    if (r.startRow >= range.startRow) {
-      ret.y = rowMap.get(r.startRow)?.y || 0;
+    if (startRow >= range.startRow) {
+      y = rowMap.get(startRow)?.y || 0;
     }
-    r.eachRow((index) => {
-      const height = this.rowHeight(index);
-      if (height > 0) {
-        if (index < range.startRow) ret.y -= height;
-        ret.height += height;
+    for (let i = startRow; i <= endRow; i += 1) {
+      const h = this.rowHeight(i);
+      if (h > 0) {
+        if (i < range.startRow) y -= h;
+        height += h;
       }
-    });
+    }
+    return { y, height };
+  }
 
+  rectCol(startCol: number, endCol: number) {
+    const { colMap, range } = this;
+    let [x, width] = [0, 0];
     // col: { x, width }
-    if (r.startCol >= range.startCol) {
-      ret.x = colMap.get(r.startCol)?.x || 0;
+    if (startCol >= range.startCol) {
+      x = colMap.get(startCol)?.x || 0;
     }
-    r.eachCol((index) => {
-      const width = this.colWidth(index);
-      if (width > 0) {
-        if (index < range.startCol) ret.x -= width;
-        ret.width += width;
+    for (let i = startCol; i <= endCol; i += 1) {
+      const w = this.colWidth(i);
+      if (w > 0) {
+        if (i < range.startCol) x -= w;
+        width += w;
       }
-    });
+    }
+    return { x, width };
+  }
 
-    return ret;
+  rect(r: Range) {
+    return {
+      ...this.rectRow(r.startRow, r.endRow),
+      ...this.rectCol(r.startCol, r.endCol),
+    };
   }
 
   cellAtCache: AreaCell | null = null;

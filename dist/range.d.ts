@@ -45,12 +45,14 @@ export default class Range {
      * @returns {boolean}
      */
     within(other: Range): boolean;
+    intersectsRow(startRow: number, endRow: number): boolean;
+    intersectsCol(startCol: number, endCol: number): boolean;
     /**
      * check whether or not the range intersects the other range
      * @param {Range} other
      * @returns {boolean}
      */
-    intersects(other: Range): boolean;
+    intersects({ startRow, startCol, endRow, endCol }: Range): boolean;
     /**
      * the self union the other resulting in the new range
      * @param {Range} other
@@ -62,11 +64,13 @@ export default class Range {
      * @returns this
      */
     eachRow(cb: (index: number) => void): Range;
+    eachRow(cb: (index: number) => void, max: number): Range;
     /**
      * @param {Function} cb (col) => {}
      * @returns this
      */
     eachCol(cb: (index: number) => void): Range;
+    eachCol(cb: (index: number) => void, max: number): Range;
     /**
      * @param {Function} cb (rowIndex, colIndex) => {}
      * @returns this

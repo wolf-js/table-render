@@ -1,4 +1,4 @@
-import { Rect, AreaCell } from './types';
+import { Rect, AreaCell } from '.';
 import Range from './range';
 export default class Area {
     readonly range: Range;
@@ -31,10 +31,18 @@ export default class Area {
     eachRow(cb: (index: number, y: number, height: number) => void): void;
     eachCol(cb: (index: number, x: number, width: number) => void): void;
     each(cb: (row: number, col: number, rect: Rect) => void): void;
+    rectRow(startRow: number, endRow: number): {
+        y: number;
+        height: number;
+    };
+    rectCol(startCol: number, endCol: number): {
+        x: number;
+        width: number;
+    };
     rect(r: Range): {
         x: number;
-        y: number;
         width: number;
+        y: number;
         height: number;
     };
     cellAtCache: AreaCell | null;

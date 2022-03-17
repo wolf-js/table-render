@@ -1,9 +1,8 @@
-import Table from '.';
 import Area from './area';
 import Canvas from './canvas';
 import { cellRender } from './cell-render';
 import { eachRanges } from './range';
-import { Cell, CellFunc, CellStyle, ColFunc, LineStyle, Rect, RowFunc } from './types';
+import Table, { Cell, CellFunc, CellStyle, ColFunc, LineStyle, Rect, RowFunc } from '.';
 
 function renderLines(canvas: Canvas, { width, color }: LineStyle, cb: () => void) {
   if (width > 0) {

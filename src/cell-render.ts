@@ -1,4 +1,4 @@
-import { Align, CellStyle, Rect, VerticalAlign, TextLineType } from './types';
+import { Align, CellStyle, Rect, VerticalAlign, TextLineType } from '.';
 import Canvas from './canvas';
 
 // align: left | center | right

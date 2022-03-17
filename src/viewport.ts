@@ -1,6 +1,5 @@
-import TableRender from '.';
+import TableRender, { ViewportCell } from '.';
 import Area from './area';
-import { ViewportCell } from './types';
 
 export default class Viewport {
   /**

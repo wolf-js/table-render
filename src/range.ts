@@ -82,18 +82,21 @@ export default class Range {
     );
   }
 
+  intersectsRow(startRow: number, endRow: number) {
+    return this.startRow <= endRow && startRow <= this.endRow;
+  }
+
+  intersectsCol(startCol: number, endCol: number) {
+    return this.startCol <= endCol && startCol <= this.endCol;
+  }
+
   /**
    * check whether or not the range intersects the other range
    * @param {Range} other
    * @returns {boolean}
    */
-  intersects(other: Range): boolean {
-    return (
-      this.startRow <= other.endRow &&
-      this.startCol <= other.endCol &&
-      other.startRow <= this.endRow &&
-      other.startCol <= this.endCol
-    );
+  intersects({ startRow, startCol, endRow, endCol }: Range): boolean {
+    return this.intersectsCol(startCol, endCol) && this.intersectsRow(startRow, endRow);
   }
 
   /**
@@ -114,8 +117,12 @@ export default class Range {
    * @param {Function} cb (row) => {}
    * @returns this
    */
-  eachRow(cb: (index: number) => void): Range {
-    for (let row = this.startRow; row <= this.endRow; row += 1) {
+  eachRow(cb: (index: number) => void): Range;
+  eachRow(cb: (index: number) => void, max: number): Range;
+  eachRow(cb: (index: number) => void, max?: number): Range {
+    let { endRow } = this;
+    if (max && endRow > max) endRow = max;
+    for (let row = this.startRow; row <= endRow; row += 1) {
       cb(row);
     }
     return this;
@@ -125,8 +132,12 @@ export default class Range {
    * @param {Function} cb (col) => {}
    * @returns this
    */
-  eachCol(cb: (index: number) => void): Range {
-    for (let col = this.startCol; col <= this.endCol; col += 1) {
+  eachCol(cb: (index: number) => void): Range;
+  eachCol(cb: (index: number) => void, max: number): Range;
+  eachCol(cb: (index: number) => void, max?: number): Range {
+    let { endCol } = this;
+    if (max && endCol > max) endCol = max;
+    for (let col = this.startCol; col <= endCol; col += 1) {
       cb(col);
     }
     return this;
