@@ -2,6 +2,7 @@ import { stringAt, expr2xy, xy2expr } from './alphabet';
 import Range from './range';
 import { render } from './render';
 import Viewport from './viewport';
+import Area from './area';
 
 export type Align = 'left' | 'right' | 'center';
 export type VerticalAlign = 'top' | 'bottom' | 'middle';
@@ -412,7 +413,7 @@ export default class TableRender {
   }
 }
 
-export { expr2xy, xy2expr, stringAt, Range, Viewport };
+export { expr2xy, xy2expr, stringAt, Range, Viewport, Area };
 
 declare global {
   interface Window {

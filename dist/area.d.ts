@@ -32,17 +32,21 @@ export default class Area {
     eachCol(cb: (index: number, x: number, width: number) => void): void;
     each(cb: (row: number, col: number, rect: Rect) => void): void;
     rectRow(startRow: number, endRow: number): {
+        x: number;
         y: number;
+        width: number;
         height: number;
     };
     rectCol(startCol: number, endCol: number): {
         x: number;
+        y: number;
         width: number;
+        height: number;
     };
     rect(r: Range): {
         x: number;
-        width: number;
         y: number;
+        width: number;
         height: number;
     };
     cellAtCache: AreaCell | null;

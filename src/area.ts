@@ -89,7 +89,8 @@ export default class Area {
         height += h;
       }
     }
-    return { y, height };
+    const { width } = this;
+    return { x: 0, y, width, height };
   }
 
   rectCol(startCol: number, endCol: number) {
@@ -106,14 +107,14 @@ export default class Area {
         width += w;
       }
     }
-    return { x, width };
+    const { height } = this;
+    return { x, y: 0, width, height };
   }
 
   rect(r: Range) {
-    return {
-      ...this.rectRow(r.startRow, r.endRow),
-      ...this.rectCol(r.startCol, r.endCol),
-    };
+    const { y, height } = this.rectRow(r.startRow, r.endRow);
+    const { x, width } = this.rectCol(r.startCol, r.endCol);
+    return { x, y, width, height };
   }
 
   cellAtCache: AreaCell | null = null;
