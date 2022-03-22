@@ -1,5 +1,5 @@
 import { stringAt, expr2xy, xy2expr } from './alphabet';
-import Range from './range';
+import Range, { eachRanges, findRanges } from './range';
 import Viewport from './viewport';
 import Area from './area';
 export declare type Align = 'left' | 'right' | 'center';
@@ -173,7 +173,7 @@ export default class TableRender {
     get viewport(): Viewport | null;
     static create(container: string | HTMLCanvasElement, width: number, height: number): TableRender;
 }
-export { expr2xy, xy2expr, stringAt, Range, Viewport, Area };
+export { expr2xy, xy2expr, stringAt, Range, Viewport, Area, eachRanges, findRanges };
 declare global {
     interface Window {
         wolf: any;

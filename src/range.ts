@@ -1,4 +1,4 @@
-import { expr2xy } from './alphabet';
+import { expr2xy, xy2expr } from './alphabet';
 
 /**
  * the range specified by a start position and an end position,
@@ -38,6 +38,10 @@ export default class Range {
   // count of cols contained in this range
   get cols(): number {
     return this.endCol - this.startCol;
+  }
+
+  get multiple(): boolean {
+    return this.cols > 0 || this.rows > 0;
   }
 
   /**
@@ -158,6 +162,14 @@ export default class Range {
     return new Range(this.startRow, this.startCol, this.endRow, this.endCol);
   }
 
+  toString() {
+    let ref = xy2expr(this.startCol, this.startRow);
+    if (this.multiple) {
+      ref += `:${xy2expr(this.endCol, this.endRow)}`;
+    }
+    return ref;
+  }
+
   static create(row: number, col: number): Range;
   static create(row: number, col: number, row1: number, col1: number): Range;
   static create(row: number, col: number, row1?: number, col1?: number): Range {
@@ -175,19 +187,22 @@ export default class Range {
     }
     return new Range(row, col, row, col);
   }
-}
 
-export function newRange(ref: string): Range {
-  const ary = ref.split(':');
-  const start = expr2xy(ary[0]);
-  const end = expr2xy(ary[1]);
-  return new Range(start[1], start[0], end[1], end[0]);
+  static with(ref: string): Range {
+    const refs = ref.split(':');
+    const [col, row] = expr2xy(refs[0]);
+    if (refs.length === 1) {
+      return this.create(row, col);
+    }
+    const [col1, row1] = expr2xy(refs[1]);
+    return this.create(row, col, row1, col1);
+  }
 }
 
 export function eachRanges(refs: string[], cb: (range: Range) => void) {
   if (refs && refs.length > 0) {
     refs.forEach((ref) => {
-      cb(newRange(ref));
+      cb(Range.with(ref));
     });
   }
 }
@@ -195,7 +210,7 @@ export function eachRanges(refs: string[], cb: (range: Range) => void) {
 export function findRanges(refs: string[], filter: (it: Range) => boolean) {
   if (refs && refs.length > 0) {
     for (let ref of refs) {
-      const r = newRange(ref);
+      const r = Range.with(ref);
       if (filter(r)) return r;
     }
   }

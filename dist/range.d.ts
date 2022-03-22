@@ -20,6 +20,7 @@ export default class Range {
     get end(): [number, number];
     get rows(): number;
     get cols(): number;
+    get multiple(): boolean;
     /**
      * check whether or not the row-index contained in the row of range
      * @param {int} index
@@ -77,9 +78,10 @@ export default class Range {
      */
     each(cb: (rowIndex: number, colIndex: number) => void): Range;
     clone(): Range;
+    toString(): string;
     static create(row: number, col: number): Range;
     static create(row: number, col: number, row1: number, col1: number): Range;
+    static with(ref: string): Range;
 }
-export declare function newRange(ref: string): Range;
 export declare function eachRanges(refs: string[], cb: (range: Range) => void): void;
 export declare function findRanges(refs: string[], filter: (it: Range) => boolean): Range | null;

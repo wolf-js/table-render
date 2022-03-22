@@ -1,5 +1,5 @@
 import { stringAt, expr2xy, xy2expr } from './alphabet';
-import Range from './range';
+import Range, { eachRanges, findRanges } from './range';
 import { render } from './render';
 import Viewport from './viewport';
 import Area from './area';
@@ -413,7 +413,7 @@ export default class TableRender {
   }
 }
 
-export { expr2xy, xy2expr, stringAt, Range, Viewport, Area };
+export { expr2xy, xy2expr, stringAt, Range, Viewport, Area, eachRanges, findRanges };
 
 declare global {
   interface Window {
