@@ -170,6 +170,15 @@ export default class Range {
     return ref;
   }
 
+  equals(other: Range) {
+    return (
+      this.startRow === other.startRow &&
+      this.startCol === other.startCol &&
+      this.endRow === other.endRow &&
+      this.endCol === other.endCol
+    );
+  }
+
   static create(row: number, col: number): Range;
   static create(row: number, col: number, row1: number, col1: number): Range;
   static create(row: number, col: number, row1?: number, col1?: number): Range {

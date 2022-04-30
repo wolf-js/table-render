@@ -79,6 +79,7 @@ export default class Range {
     each(cb: (rowIndex: number, colIndex: number) => void): Range;
     clone(): Range;
     toString(): string;
+    equals(other: Range): boolean;
     static create(row: number, col: number): Range;
     static create(row: number, col: number, row1: number, col1: number): Range;
     static with(ref: string): Range;
