@@ -42,9 +42,10 @@ export type Cell = {
   value: string | number;
   type?: string;
   style?: number;
-};
+  [property: string]: any
+} | string | number | null | undefined;
 
-export type CellFunc = (rowIndex: number, colIndex: number) => Cell | string | number | undefined;
+export type CellFunc = (rowIndex: number, colIndex: number) => Cell;
 
 export type Row = {
   height: number;
@@ -329,7 +330,7 @@ export default class TableRender {
     return this;
   }
 
-  cell(value: (rowIndex: number, colIndex: number) => Cell | string | number | undefined) {
+  cell(value: (rowIndex: number, colIndex: number) => Cell) {
     this._cell = value;
     return this;
   }

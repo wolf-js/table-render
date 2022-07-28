@@ -14,7 +14,7 @@ function renderLines(canvas: Canvas, { width, color }: LineStyle, cb: () => void
 
 function renderCell(
   canvas: Canvas,
-  cell: Cell | string | number | undefined,
+  cell: Cell,
   rect: Rect,
   defaultStyle: CellStyle,
   styles: CellStyle[]

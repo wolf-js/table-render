@@ -35,8 +35,9 @@ export declare type Cell = {
     value: string | number;
     type?: string;
     style?: number;
-};
-export declare type CellFunc = (rowIndex: number, colIndex: number) => Cell | string | number | undefined;
+    [property: string]: any;
+} | string | number | null | undefined;
+export declare type CellFunc = (rowIndex: number, colIndex: number) => Cell;
 export declare type Row = {
     height: number;
     hide?: boolean;
@@ -157,7 +158,7 @@ export default class TableRender {
     scrollCols(value: number): this;
     row(value: RowFunc): this;
     col(value: ColFunc): this;
-    cell(value: (rowIndex: number, colIndex: number) => Cell | string | number | undefined): this;
+    cell(value: (rowIndex: number, colIndex: number) => Cell): this;
     merges(value?: string[]): this;
     styles(value?: CellStyle[]): this;
     lineStyle(value: Partial<LineStyle>): this;
